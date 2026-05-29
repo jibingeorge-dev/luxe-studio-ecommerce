@@ -5,7 +5,8 @@ Luxe Studio is a modern Django-based ecommerce web application with features lik
 
 Features
 
-    User Features
+User Features
+
 User Registration & Login
 Product Listing & Categories
 Product Detail Page with Multiple Images

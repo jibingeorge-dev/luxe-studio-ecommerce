@@ -1,0 +1,43 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/frontpage.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+<div class="cont">
+
+    <div class="headdiv">
+        <h1>Luxe Studio</h1>
+        <p>From Stitch to <br>Glam <br>All in One Studio</p>
+    </div>
+
+    <div class="login">
+        <div class="login-card">
+             {% block content %}
+             
+             {% endblock %}
+            <!-- <h2 style="color:white;">Login</h2>
+            <form method="POST">
+                {% csrf_token %}
+
+            <input type="text" name="username" placeholder=" Enter Username">
+            <input type="password" name="password" placeholder="Enter Password">
+
+            <button type="submit">Sign in</button>
+            </form>
+            <br>
+            <p style="color: white;">Don’t have an account?<a href="/register" style="text-decoration: none;">Register</a></p> -->
+        </div>
+    </div>
+
+</div>
+    
+</body>
+</html>

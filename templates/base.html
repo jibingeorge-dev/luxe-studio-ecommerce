@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Luxe Studio</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="checkout-logo">
+        <a href="/home/">Luxe Studio</a>
+    </div>
+
+    
+
+    <div class="nav-links">
+        <a href="/home/" class="cat-link">Home</a>
+        <a href="/cart/" class="cat-link">Cart</a>
+        <a href="/wishlist/" class="cat-link">Wishlist</a>
+        <a href="/cart/history/" class="cat-link">Orders</a>
+        <a href="/account/" class="cat-link">Account</a>
+       
+    </div>
+</div>
+
+<!-- MESSAGE -->
+{% if messages %}
+    {% for message in messages %}
+        <div class="toast show">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<!-- CONTENT -->
+{% block fullwidth %}{% endblock %}
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+
+<script>
+setTimeout(() => {
+    document.querySelectorAll('.toast').forEach(t => t.classList.remove('show'));
+}, 2000);
+</script>
+<script>
+window.onload = function () {
+    if (sessionStorage.getItem("scrollPos")) {
+        window.scrollTo(0, sessionStorage.getItem("scrollPos"));
+    }
+};
+
+window.onbeforeunload = function () {
+    sessionStorage.setItem("scrollPos", window.scrollY);
+};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+
+
+{% block fullwidth %}
+<div class="category-bar">
+    <a href="/home/" class="cat-link {% if not request.GET.category %}active{% endif %}">All</a>
+    <a href="/home/?category=makeup" class="cat-link {% if request.GET.category == 'makeup' %}active{% endif %}">Makeup</a>
+    <a href="/home/?category=dress" class="cat-link {% if request.GET.category == 'dress' %}active{% endif %}">Clothing</a>
+    
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="product-grid">
+{% for product in products %}
+
+<div class="card" onclick="window.location.href='/products/{{ product.id }}/'">
+
+    {% if product.images.first %}
+        <img src="{{ product.images.first.image.url }}">
+    {% endif %}
+
+   <div class="card-content">
+    <h3>{{ product.name }}</h3>
+    <p class="desc">{{ product.description }}</p>
+    </div>
+
+    <div class="card-bottom">
+    <p class="price">Rs.{{ product.price }}</p>
+
+    <button class="wishlist-btn"
+        id="wish-{{ product.id }}"
+        onclick="toggleWishlist('{{ product.id }}', event)">
+        
+        {% if product.id in wishlist_items %}
+            ❤️ Wishlisted
+        {% else %}
+            🤍 Wishlist
+        {% endif %}
+    </button>
+    </div>
+
+</div>
+
+{% endfor %}
+</div>
+
+<script>
+function toggleWishlist(productId, event) {
+    event.stopPropagation();
+
+    fetch(`/wishlist/toggle/${productId}/`)
+    .then(res => res.json())
+    .then(data => {
+        const btn = document.getElementById(`wish-${productId}`);
+        btn.innerHTML = data.status === "added"
+            ? "❤️ Wishlisted"
+            : "🤍 Wishlist";
+    });
+}
+</script>
+
+{% endblock %}
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>User Home</title>
+</head>
+<body>
+
+<h1>Welcome User</h1>
+
+
+
+
+<a href="/account/">My Account</a><br><br>
+<a href="/logout/">Logout</a>
+
+
+<a href="/cart/">View Cart</a>
+<a href="/cart/history/">My Orders</a><br> 
+<a href="/wishlist/">My Wishlist</a>
+
+<h2>Categories</h2>
+
+
+<a href="/products/?category=makeup">Makeup</a> |
+<a href="/products/?category=dress">Dress</a>
+
+<hr>
+
+
+
+<div class="product-grid">
+    {% for product in products %}
+
+    <div class="card" onclick="window.location.href='/products/{{ product.id }}/'">
+
+        {% if product.images.first %}
+            <img src="{{ product.images.first.image.url }}">
+        {% endif %}
+
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.description }}</p>
+        <p>₹{{ product.price }}</p>
+
+        
+     <button class="wishlist-btn"
+        id="wish-{{ product.id }}"
+        onclick="toggleWishlist('{{ product.id }}', event)">
+
+    {% if product.id in wishlist_items %}
+        ❤️ Wishlisted
+    {% else %}
+        🤍 Add to Wishlist
+    {% endif %}
+
+</button>
+
+    </div>
+
+    {% endfor %}
+</div>
+<script>
+function toggleWishlist(productId, event) {
+    event.stopPropagation();
+
+    fetch(`/wishlist/toggle/${productId}/`)
+    .then(response => response.json())
+    .then(data => {
+        const btn = document.getElementById(`wish-${productId}`);
+
+        if (data.status === "added") {
+            btn.innerHTML = "❤️ Wishlisted";
+        } else {
+            btn.innerHTML = "🤍 Add to Wishlist";
+        }
+    });
+}
+</script>
+<style>
+/* GRID LAYOUT */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* CARD */
+.product-card {
+    text-decoration: none;
+    color: black;
+}
+
+.card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 10px;
+    background: white;
+    transition: 0.3s;
+}
+
+/* IMAGE */
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* HOVER EFFECT (like apps) */
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+   
+    
+}
+
+.wishlist-btn {
+    background: none;
+    border: none;
+    color: purple;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 8px;
+    padding: 0;
+
+}
+</style>
+
+
+</body>
+</html> -->

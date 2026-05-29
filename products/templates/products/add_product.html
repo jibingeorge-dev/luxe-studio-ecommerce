@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Product</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="admin-body">
+
+<div class="admin-container">
+
+    <!-- SIDEBAR -->
+    <div class="admin-sidebar">
+
+        <h2>Luxe Admin</h2>
+
+        <a href="/owner/dashboard/">Dashboard</a>
+        <a href="/products/add/">Add Product</a>
+        <a href="/owner/products/">View Products</a>
+        <a href="/owner/orders/">View Orders</a>
+        <a href="/logout/">Logout</a>
+
+    </div>
+
+    <!-- MAIN -->
+    <div class="admin-main">
+
+        <div class="page-top">
+            <h1>Add Product</h1>
+            <p>Create new products for Luxe Studio</p>
+        </div>
+
+        <div class="product-form-card">
+
+            <form method="POST" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="django-form">
+                    {{ form.as_p }}
+                </div>
+
+                <div class="image-upload">
+                    <label>Upload Images</label>
+
+                    <input type="file"
+                           name="images"
+                           multiple>
+                </div>
+
+                <button type="submit" class="publish-btn">
+                    Add Product
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+<!-- <h2>Add Product</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    {{ form.as_p }}
+
+    
+    <label>Upload Images</label>
+    <input type="file" name="images" multiple><br><br>
+
+    <button type="submit">Add Product</button>
+</form> -->

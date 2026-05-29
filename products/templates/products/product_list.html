@@ -1,0 +1,111 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Products</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="admin-body">
+
+<div class="admin-container">
+
+    <!-- SIDEBAR -->
+    <div class="admin-sidebar">
+
+        <h2>Luxe Admin</h2>
+
+        <a href="/owner/dashboard/">Dashboard</a>
+        <a href="/products/add/">Add Product</a>
+        <a href="/owner/products/">View Products</a>
+        <a href="/owner/orders/">View Orders</a>
+        <a href="/logout/">Logout</a>
+
+    </div>
+
+    <!-- MAIN -->
+    <div class="admin-main">
+
+        <div class="page-top">
+            <h1>Products</h1>
+            <p>Manage all products</p>
+        </div>
+
+        <div class="admin-products-grid">
+
+            {% for product in products %}
+
+            <div class="admin-product-card">
+
+                {% if product.images.first %}
+                    <img src="{{ product.images.first.image.url }}">
+                {% endif %}
+
+                <div class="admin-product-content">
+
+                    <h3>{{ product.name }}</h3>
+
+                    <p class="admin-desc">
+                        {{ product.description|truncatewords:15 }}
+                    </p>
+
+                    <h4>₹{{ product.price }}</h4>
+
+                    <div class="admin-product-actions">
+
+                        <a href="/products/edit/{{ product.id }}/"
+                           class="edit-btn">
+                            Edit
+                        </a>
+
+                        <form action="/products/delete/{{ product.id }}/"
+                              method="POST">
+
+                            {% csrf_token %}
+
+                            <button type="submit"
+                                    class="delete-btn"
+                                    onclick="return confirm('Delete this product?')">
+
+                                Delete
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+<!-- <h1>Products</h1>
+
+{% for product in products %}
+    <div  style="border:1px solid #ccc; padding:10px; margin:10px;">
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.description }}</p>
+        <p>₹{{ product.price }}</p>
+
+        {% if product.images.all %}
+    <img src="{{ product.images.first.image.url }}" width="150">
+        {% endif %}
+
+   <form action="/products/delete/{{ product.id }}/" method="POST">
+    {% csrf_token %}
+    <button type="submit" onclick="return confirm('Delete this product?')">Delete</button>
+   </form>
+    </div>
+{% endfor %} -->

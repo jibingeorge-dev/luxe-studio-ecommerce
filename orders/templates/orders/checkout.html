@@ -1,0 +1,143 @@
+{% extends 'checkout_base.html' %}
+{% block content %}
+<h2>Checkout</h2>
+
+<h3>Total: ₹{{ total }}</h3>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <h3>Select Address</h3>
+{% for addr in addresses %}
+    {% if addr.name and addr.address %}
+        <label>
+            <input type="radio" name="address_id" value="{{ addr.id }}">
+            {{ addr.name }} - {{ addr.address }}
+        </label><br>
+    {% endif %}
+{% endfor %}
+
+    <h3>OR Add New Address</h3>
+
+    <input type="text"
+       id="name"
+       name="name"
+       placeholder="Name"
+       pattern="[A-Za-z ]+"
+       title="Only letters allowed"><br>
+
+<input type="text"
+       id="phone"
+       name="phone"
+       placeholder="Phone"
+       pattern="[0-9]{10}"
+       maxlength="10"
+       title="Enter 10 digit phone number"><br>
+
+<textarea id="address"
+          name="address"
+          placeholder="Address"></textarea><br>
+
+<input type="text"
+       id="city"
+       name="city"
+       placeholder="City"
+       pattern="[A-Za-z ]+"
+       title="Only letters allowed"><br>
+
+<input type="text"
+       id="pincode"
+       name="pincode"
+       placeholder="Pincode"
+       pattern="[0-9]{6}"
+       maxlength="6"
+       title="Enter valid pincode"><br>
+
+    <button type="submit" class="order">Place Order</button>
+</form>
+<script>
+
+const fields = [
+
+    document.getElementById('name'),
+    document.getElementById('phone'),
+    document.getElementById('address'),
+    document.getElementById('city'),
+    document.getElementById('pincode')
+
+];
+
+const radios = document.querySelectorAll(
+    'input[name="address_id"]'
+);
+
+fields.forEach(field => {
+
+    field.addEventListener('input', () => {
+
+        radios.forEach(radio => {
+
+            radio.checked = false;
+
+        });
+
+    });
+
+});
+
+</script>
+<script>
+
+// NAME + CITY LETTERS ONLY
+function allowLetters(event) {
+
+    const char = event.key;
+
+    if (!/[a-zA-Z ]/.test(char)) {
+        event.preventDefault();
+    }
+}
+
+// PHONE + PINCODE NUMBERS ONLY
+function allowNumbers(event) {
+
+    const char = event.key;
+
+    if (!/[0-9]/.test(char)) {
+        event.preventDefault();
+    }
+}
+
+document.getElementById('name')
+    .addEventListener('keypress', allowLetters);
+
+document.getElementById('city')
+    .addEventListener('keypress', allowLetters);
+
+document.getElementById('phone')
+    .addEventListener('keypress', allowNumbers);
+
+document.getElementById('pincode')
+    .addEventListener('keypress', allowNumbers);
+
+</script>
+
+<style>
+    .order{
+        
+    background:black;
+    color:white;
+    padding:14px 28px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:bold;
+    transition:0.3s;
+    margin-top: 20px;
+
+    }
+    .order:hover{
+    background:#333;
+    }
+</style> 
+
+{% endblock %}

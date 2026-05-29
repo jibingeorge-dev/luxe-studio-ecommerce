@@ -1,0 +1,154 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>All Orders</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body class="admin-body">
+
+<div class="admin-container">
+
+    <!-- SIDEBAR -->
+    <div class="admin-sidebar">
+
+        <h2>Luxe Admin</h2>
+
+        <a href="/owner/dashboard/">Dashboard</a>
+        <a href="/products/add/">Add Product</a>
+        <a href="/owner/products/">View Products</a>
+        <a href="/owner/orders/">View Orders</a>
+        <a href="/logout/">Logout</a>
+
+    </div>
+
+    <!-- MAIN -->
+    <div class="admin-main">
+
+        <div class="admin-top">
+
+            <h1>All Orders</h1>
+
+        </div>
+
+        <!-- FILTERS -->
+        <div class="filter-bar">
+
+            <a href="/owner/orders/">All</a>
+
+            <a href="?days=7">Last 7 Days</a>
+
+            <a href="?days=30">Last 30 Days</a>
+
+        </div>
+
+        <!-- TABLE -->
+        <div class="orders-table">
+
+    <table>
+
+        <tr>
+            <th>Order ID</th>
+            <th>User</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for order in orders %}
+
+        <tr>
+
+            <td>#{{ order.id }}</td>
+
+            <td>
+                {{ order.user.username }}
+            </td>
+
+            <td>
+                {{ order.created_at|date:"d M Y - h:i A" }}
+            </td>
+
+            <td>
+
+                {% if order.status == "Accepted" %}
+                    <span class="status accepted">
+                        Accepted
+                    </span>
+
+                {% elif order.status == "Rejected" %}
+                    <span class="status rejected">
+                        Rejected
+                    </span>
+
+                {% else %}
+                    <span class="status pending">
+                        Pending
+                    </span>
+                {% endif %}
+
+            </td>
+
+            <td>
+                ₹{{ order.total_price }}
+            </td>
+
+            <td class="action-buttons">
+
+                {% if order.status == "Pending" %}
+
+                    <a href="/owner/accept/{{ order.id }}/"
+                       class="accept-btn">
+                        Accept
+                    </a>
+
+                    <a href="/owner/reject/{{ order.id }}/"
+                       class="reject-btn">
+                        Reject
+                    </a>
+
+                {% endif %}
+
+                <a href="/cart/order/{{ order.id }}/"
+                   class="view-btn">
+                    View
+                </a>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+<!-- <h2>All Orders</h2>
+
+{% for order in orders %}
+    <div style="border:1px solid #ccc; margin:10px; padding:10px;">
+        <p>Order ID: {{ order.id }}</p>
+        <p>User: {{ order.user.username }}</p>
+        <p>Status: {{ order.status }}</p>
+        <p>Total: ₹{{ order.total_price }}</p>
+
+        {% if order.status == "Pending" %}
+            <a href="/owner/accept/{{ order.id }}/">Accept</a>
+            <a href="/owner/reject/{{ order.id }}/">Reject</a>
+        {% endif %}
+        <a href="/cart/order/{{ order.id }}/">View Details</a>
+    </div>
+{% endfor %} -->

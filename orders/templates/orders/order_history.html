@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>My Orders</h2>
+{% if messages %}
+    {% for message in messages %}
+        <div class="success-msg">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<script>
+    setTimeout(() => {
+        const msgs = document.querySelectorAll('.success-msg');
+
+        msgs.forEach(msg => {
+            msg.style.display = 'none';
+        });
+
+    }, 3000);
+</script>
+<style>
+    .success-msg{
+    background: #d1fae5;
+    color: #065f46;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+</style>
+
+{% for order in orders %}
+    <div style="border:1px solid #ccc; margin:10px; padding:10px;">
+        <p>Order ID: {{ order.id }}</p>
+        <p>Status: {{ order.status }}</p>
+        <p>Total: ₹{{ order.total_price }}</p>
+
+        <a href="/cart/order/{{ order.id }}/" class="detailbtn">View Details</a> <br>
+
+        {% if order.status == "Pending" %}
+            <a href="/cart/cancel/{{ order.id }}/" class="detailbtn" >Cancel Order</a>
+        {% endif %}
+       
+    </div>
+
+    <style>
+        .detailbtn{
+            text-decoration: none;
+            color: #065f46;
+            font-weight: bold;
+        }
+        .detailbtn:hover{
+            color: #ff3f6c;
+        }
+    </style>
+{% endfor %}
+{% endblock %}

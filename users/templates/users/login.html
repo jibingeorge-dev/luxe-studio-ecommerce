@@ -1,0 +1,22 @@
+{% extends "users/frontpage.html" %}
+
+{% block content %}
+    <h2 style="color:white;">Login</h2>
+    {% if messages %}
+    {% for message in messages %}
+        <div style="color:red; margin-bottom:10px;">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+            <form method="POST">
+                {% csrf_token %}
+
+            <input type="text" name="username" placeholder=" Enter your Username">
+            <input type="password" name="password" placeholder="Enter your Password">
+
+            <button type="submit">Sign in</button>
+            </form>
+            <br>
+            <p style="color: white;">Don’t have an account?<a href="/register" style="text-decoration: none;">Register</a></p>
+{% endblock %}

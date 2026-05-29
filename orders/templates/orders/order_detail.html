@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Order Details</h2>
+
+<p>Order ID: {{ order.id }}</p>
+<p>Status: {{ order.status }}</p>
+
+<h3>Delivery Address</h3>
+
+<div>
+    <p><b>{{ order.address.name }}</b></p>
+    <p>{{ order.address.address }}</p>
+    <p>{{ order.address.city }} - {{ order.address.pincode }}</p>
+    <p>{{ order.address.phone }}</p>
+</div>
+
+<h3>Items</h3>
+
+{% for item in items %}
+    <div>
+        <p>{{ item.product.name }}</p>
+        <p>Qty: {{ item.quantity }}</p>
+        <p>₹{{ item.price }}</p>
+    </div>
+{% endfor %}
+{% endblock %}

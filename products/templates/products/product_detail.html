@@ -1,0 +1,392 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="product-detail-container">
+
+    <!-- LEFT SIDE IMAGES -->
+    <div class="product-gallery">
+
+        {% for img in product.images.all %}
+            <img src="{{ img.image.url }}"
+                 class="product-thumb"
+                 onclick="openImage('{{ img.image.url }}')">
+        {% endfor %}
+
+    </div>
+
+    <!-- RIGHT SIDE DETAILS -->
+    <div class="product-info">
+
+        <h2>{{ product.name }}</h2>
+
+        <p class="product-description">
+            {{ product.description }}
+        </p>
+
+        <p class="product-price">
+            ₹{{ product.price }}
+        </p>
+
+        <div class="product-buttons">
+
+            <a href="/cart/add/{{ product.id }}/"
+               class="cart-btn">
+               Add to Cart
+            </a>
+
+            <button class="wishlist-btn"
+                id="wish-{{ product.id }}"
+                onclick="toggleWishlist('{{ product.id }}', event)">
+
+                {% if product.id in wishlist_items %}
+                    ❤️ Wishlisted
+                {% else %}
+                    🤍 Wishlist
+                {% endif %}
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- FULLSCREEN IMAGE MODAL -->
+<div id="imageModal" class="image-modal">
+
+    <span class="close-btn" onclick="closeImage()">
+        ✕
+    </span>
+
+    <img id="modalImg" class="modal-image">
+
+</div>
+
+
+<script>
+
+function openImage(src) {
+
+    document.getElementById("imageModal").style.display = "flex";
+
+    document.getElementById("modalImg").src = src;
+
+    document.body.style.overflow = "hidden";
+}
+
+function closeImage() {
+
+    document.getElementById("imageModal").style.display = "none";
+
+    document.body.style.overflow = "auto";
+}
+
+
+function toggleWishlist(productId, event) {
+
+    event.stopPropagation();
+
+    fetch(`/wishlist/toggle/${productId}/`)
+    .then(res => res.json())
+
+    .then(data => {
+
+        const btn = document.getElementById(`wish-${productId}`);
+
+        btn.innerHTML = data.status === "added"
+            ? "❤️ Wishlisted"
+            : "🤍 Wishlist";
+    });
+}
+
+</script>
+
+
+<style>
+
+/* MAIN LAYOUT */
+.product-detail-container{
+    display:flex;
+    gap:50px;
+    padding:40px;
+    flex-wrap:wrap;
+}
+
+
+/* GALLERY */
+.product-gallery{
+    display:flex;
+    flex-direction:row;
+    gap:15px;
+}
+
+
+/* SMALL IMAGES */
+.product-thumb{
+    width:200px;
+    height:240px;
+    object-fit:cover;
+    border-radius:12px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.product-thumb:hover{
+    transform:scale(1.05);
+}
+
+
+/* PRODUCT INFO */
+.product-info{
+    flex:1;
+    min-width:300px;
+}
+
+.product-info h2{
+    font-size:36px;
+    margin-bottom:15px;
+}
+
+.product-description{
+    color:#555;
+    font-size:18px;
+    line-height:1.6;
+    margin-bottom:20px;
+}
+
+.product-price{
+    font-size:30px;
+    font-weight:bold;
+    margin-bottom:30px;
+}
+
+
+/* BUTTONS */
+.product-buttons{
+    display:flex;
+    gap:20px;
+    align-items:center;
+}
+
+.cart-btn{
+    background:black;
+    color:white;
+    padding:14px 28px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.cart-btn:hover{
+    background:#333;
+}
+
+.wishlist-btn{
+    background:#fff0f6;
+    border:none;
+    color:#ff3f6c;
+    padding:14px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+}
+
+
+/* FULLSCREEN MODAL */
+.image-modal{
+
+    display:none;
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,0.92);
+
+    z-index:999999;
+
+    justify-content:center;
+    align-items:center;
+}
+
+
+/* LARGE IMAGE */
+.modal-image{
+
+    
+  
+    
+    width:600px;
+    max-height:85%;
+
+
+
+    border-radius:12px;
+}
+
+
+/* CLOSE BUTTON */
+.close-btn{
+
+    position:absolute;
+
+    top:25px;
+    right:40px;
+
+    color:white;
+
+    font-size:45px;
+
+    cursor:pointer;
+
+    z-index:1000000;
+}
+
+
+/* MOBILE */
+@media(max-width:768px){
+
+    .product-detail-container{
+        flex-direction:column;
+        padding:20px;
+    }
+
+    .product-gallery{
+        flex-direction:row;
+        overflow-x:auto;
+    }
+
+    .product-thumb{
+        width:100px;
+        height:130px;
+    }
+
+    .product-info h2{
+        font-size:28px;
+    }
+
+    .product-price{
+        font-size:24px;
+    }
+
+    .product-buttons{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .cart-btn,
+    .wishlist-btn{
+        width:100%;
+        text-align:center;
+    }
+}
+
+</style>
+
+{% endblock %}
+<!-- <h2>{{ product.name }}</h2>
+
+<p>{{ product.description }}</p>
+<p>₹{{ product.price }}</p>
+
+
+{% for img in product.images.all %}
+    <img src="{{ img.image.url }}" width="150"
+         style="margin:10px; cursor:pointer;"
+         onclick="openImage('{{ img.image.url }}')">
+{% endfor %}
+
+<div id="imageModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:black;">
+    
+    <span onclick="closeImage()" 
+          style="position:absolute; top:20px; right:40px; font-size:30px; color:white; cursor:pointer;">
+        ✖
+    </span>
+
+    <img id="modalImg" 
+         style="display:block; margin:auto; max-width:80%; max-height:80%; margin-top:5%;">
+</div>
+<script>
+function openImage(src) {
+    document.getElementById("imageModal").style.display = "block";
+    document.getElementById("modalImg").src = src;
+}
+
+function closeImage() {
+    document.getElementById("imageModal").style.display = "none";
+}
+</script>
+
+<br><br>
+
+
+<a href="/cart/add/{{ product.id }}/">Add to Cart</a>
+
+<br>
+ <button class="wishlist-btn"
+        id="wish-{{ product.id }}"
+        onclick="toggleWishlist('{{ product.id }}', event)">
+
+    {% if product.id in wishlist_items %}
+        ❤️ Wishlisted
+    {% else %}
+        🤍 Add to Wishlist
+    {% endif %}
+
+</button>
+<script>
+function toggleWishlist(productId, event) {
+    event.stopPropagation();
+
+    fetch(`/wishlist/toggle/${productId}/`)
+    .then(response => response.json())
+    .then(data => {
+        const btn = document.getElementById(`wish-${productId}`);
+
+        if (data.status === "added") {
+            btn.innerHTML = "❤️ Wishlisted";
+        } else {
+            btn.innerHTML = "🤍 Add to Wishlist";
+        }
+    });
+}
+</script>
+<style>
+    .wishlist-btn {
+    background: none;
+    border: none;
+    color: purple;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 8px;
+    padding: 0;
+
+}
+</style>
+
+{% if messages %}
+    {% for message in messages %}
+        <p class="msg" style="color: green; font-weight: bold;">
+            {{ message }}
+        </p>
+    {% endfor %}
+{% endif %}
+
+<script>
+    setTimeout(function(){
+        let msgs = document.querySelectorAll('.msg');
+        msgs.forEach(function(msg){
+            msg.style.display = 'none';
+        });
+    },2000);
+</script>
+ -->

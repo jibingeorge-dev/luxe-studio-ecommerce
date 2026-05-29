@@ -1,0 +1,71 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Luxe Studio</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+
+<!-- CHECKOUT NAVBAR -->
+
+<div class="checkout-navbar">
+
+    <!-- LOGO -->
+    <div class="checkout-logo">
+        <a href="/home/">Luxe Studio</a>
+    </div>
+
+    <!-- STEPS -->
+    <div class="checkout-steps">
+
+        <div class="step 
+            {% if request.path == '/cart/' %}
+                active-step
+            {% endif %}
+        ">
+            BAG
+        </div>
+
+        <div class="step-line"></div>
+
+        <div class="step
+            {% if request.path == '/cart/checkout/' %}
+                active-step
+            {% endif %}
+        ">
+            ADDRESS
+        </div>
+
+        <div class="step-line"></div>
+
+        <div class="step">
+            PAYMENT
+        </div>
+
+    </div>
+
+    <!-- SECURITY -->
+    <div class="secure-text">
+        🔒 100% SECURE
+    </div>
+
+</div>
+
+<!-- PAGE CONTENT -->
+<div class="checkout-container">
+
+    {% block content %}
+    {% endblock %}
+
+</div>
+
+</body>
+</html>

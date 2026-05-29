@@ -1,0 +1,41 @@
+<h2>Products</h2>
+{% if messages %}
+    {% for message in messages %}
+       <p  class="msg"   style="color: green; font-weight: bold;">
+            {{ message }}
+        </p>
+    {% endfor %}
+{% endif %}
+
+<script>
+    setTimeout(function(){
+        let msgs = document.querySelectorAll('.msg');
+        msgs.forEach(function(msg){
+            msg.style.display = 'none';
+        });
+    },2000);
+</script>
+<h2>Categories</h2>
+
+<a href="/products/">All</a> 
+<a href="/products/?category=makeup">Makeup</a> |
+<a href="/products/?category=dress">Dress</a>
+
+<hr>
+
+{% for product in products %}
+    <div>
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.description }}</p>
+        <p>₹{{ product.price }}</p>
+
+       {% if product.images.all %}
+    <img src="{{ product.images.first.image.url }}" width="150">
+       {% endif %}
+
+        <!-- NEXT STEP BUTTON -->
+        
+        <a href="/cart/add/{{ product.id }}/">Add to Cart</a>
+
+    </div>
+{% endfor %}

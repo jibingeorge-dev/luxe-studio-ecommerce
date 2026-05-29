@@ -1,0 +1,20 @@
+{% extends "users/frontpage.html" %}
+
+{% block content %}
+
+<h2 style="color:white;">Register</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <input type="text" name="username" placeholder="Enter your Username">
+    <input type="password" name="password" placeholder="Enter your Password">
+
+    <button type="submit">Register</button>
+</form>
+
+<br>
+
+<p style="color: white;">Already have an account?<a href="/login" style="text-decoration: none;">Login</a></p>
+
+{% endblock %}

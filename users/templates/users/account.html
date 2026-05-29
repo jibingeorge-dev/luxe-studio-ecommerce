@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Account</title>
+</head>
+<body>
+    <div class="account-header">
+    <h2>Hello, {{ user.username }} 👋</h2>
+    
+</div>
+<style>
+    .account-header{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+    margin-bottom:20px;
+}
+
+.account-header h2{
+    margin:0;
+    font-size:28px;
+}
+</style>
+
+<h2>Your Addresses</h2>
+
+{% for addr in addresses %}
+    <div style="border:1px solid #ccc; margin:10px; padding:10px;">
+        <p><b>{{ addr.name }}</b></p>
+        <p>{{ addr.address }}, {{ addr.city }}</p>
+        <p>{{ addr.phone }}</p>
+        <p>{{ addr.pincode }}</p>
+
+<form action="/delete-address/{{ addr.id }}/" method="POST" 
+      onsubmit="return confirm('Delete this address?')">
+    {% csrf_token %}
+    <button type="submit">Delete</button>
+</form>
+    </div>
+{% empty %}
+    <p>No address added yet</p>
+{% endfor %}
+
+<h3>Add New Address</h3>
+
+<form method="POST">
+    {% csrf_token %}
+   <input type="text"
+       id="name"
+       name="name"
+       placeholder="Name"
+       pattern="[A-Za-z ]+"
+       title="Only letters allowed"><br>
+
+<input type="text"
+       id="phone"
+       name="phone"
+       placeholder="Phone"
+       pattern="[0-9]{10}"
+       maxlength="10"
+       title="Enter 10 digit phone number"><br>
+
+<textarea id="address"
+          name="address"
+          placeholder="Address"></textarea><br>
+
+<input type="text"
+       id="city"
+       name="city"
+       placeholder="City"
+       pattern="[A-Za-z ]+"
+       title="Only letters allowed"><br>
+
+<input type="text"
+       id="pincode"
+       name="pincode"
+       placeholder="Pincode"
+       pattern="[0-9]{6}"
+       maxlength="6"
+       title="Enter valid pincode"><br>
+
+    <button type="submit">Add Address</button>
+</form>
+
+<br>
+ <div  class="nav-links"><a href="/logout/">Logout</a></div>
+
+</body>
+</html>
+<script>
+
+// NAME + CITY LETTERS ONLY
+function allowLetters(event) {
+
+    const char = event.key;
+
+    if (!/[a-zA-Z ]/.test(char)) {
+        event.preventDefault();
+    }
+}
+
+// PHONE + PINCODE NUMBERS ONLY
+function allowNumbers(event) {
+
+    const char = event.key;
+
+    if (!/[0-9]/.test(char)) {
+        event.preventDefault();
+    }
+}
+
+document.getElementById('name')
+    .addEventListener('keypress', allowLetters);
+
+document.getElementById('city')
+    .addEventListener('keypress', allowLetters);
+
+document.getElementById('phone')
+    .addEventListener('keypress', allowNumbers);
+
+document.getElementById('pincode')
+    .addEventListener('keypress', allowNumbers);
+
+</script>
+{% endblock %}

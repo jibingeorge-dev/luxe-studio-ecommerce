@@ -1,0 +1,122 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Owner Dashboard</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="admin-body">
+
+<div class="admin-container">
+
+    <!-- SIDEBAR -->
+    <div class="admin-sidebar">
+
+        <h2>Luxe Admin</h2>
+
+        <a href="/owner/dashboard/">Dashboard</a>
+        <a href="/products/add/">Add Product</a>
+        <a href="/owner/products/">View Products</a>
+        <a href="/owner/orders/">View Orders</a>
+        <a href="/logout/">Logout</a>
+
+    </div>
+
+    <!-- MAIN -->
+    <div class="admin-main">
+
+        <div class="admin-top">
+            <h1>Dashboard</h1>
+            <p>Welcome Admin 👋</p>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <h3>Total Orders</h3>
+                <h2>{{ total_orders }}</h2>
+            </div>
+
+            <div class="stat-card">
+                <h3>Total Profit</h3>
+                <h2>₹{{ total_profit }}</h2>
+            </div>
+
+            <div class="stat-card">
+                <h3>Monthly Orders</h3>
+                <h2>{{ monthly_orders }}</h2>
+            </div>
+
+            <div class="stat-card">
+                <h3>Total Products</h3>
+                <h2>{{ total_products }}</h2>
+            </div>
+
+        </div>
+
+        <!-- RECENT ORDERS -->
+        <div class="recent-orders">
+
+    <div class="section-head">
+        <h2>Recent Orders</h2>
+    </div>
+
+    <table>
+
+        <tr>
+            <th>Order ID</th>
+            <th>User</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Date</th>
+        </tr>
+
+        {% for order in recent_orders %}
+        <tr>
+
+            <td>#{{ order.id }}</td>
+
+            <td>{{ order.user_id }}</td>
+
+            <td>₹{{ order.total_price }}</td>
+
+            <td>{{ order.status }}</td>
+
+            <td>
+                {{ order.created_at|date:"d M Y - h:i A" }}
+            </td>
+
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Owner Dashboard</title>
+</head>
+<body>
+
+<h1>Owner Dashboard</h1>
+
+<p>Welcome Admin</p>
+<a href="/products/add/">Add Product</a>
+<a href="/owner/products/">View Products</a>
+<a href="/owner/orders/">View Orders</a><br>
+
+<a href="/logout/">Logout</a>
+
+</body>
+</html> -->
